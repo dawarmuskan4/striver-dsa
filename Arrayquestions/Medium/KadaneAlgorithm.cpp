@@ -14,6 +14,7 @@ First loop will point to the first element from 0 to n-1
 second loop will iterate through the array and from i to n-1
 third loop will find the sum from i to j and store the max sum in a variable.
 */
+
 /*
 Better solution
 by eliminating the third loop and find the sum in the second loop itself 
@@ -35,15 +36,33 @@ we will consider the maximum one.
 using namespace std;
 
 int maxSubArray(vector<int>& nums) {
-        int sum = 0;
-        int maxi = nums[0];
-        for(int i=0; i<nums.size(); i++){
-            sum += nums[i];
-            if(sum>maxi) maxi = sum;
-            if(sum < 0) sum = 0;
-        }
-        return maxi;
+  int sum = 0;
+  int start = 0;
+  int ansStart = -1, ansEnd = -1;
+  int maxi = nums[0];
+  for(int i=0; i<nums.size(); i++){
+    if(sum==0) start = i; // starting index
+
+    sum += nums[i];
+
+    if(sum>maxi){
+      maxi = sum;
+      ansStart = start;
+      ansEnd = i;
     }
+
+    //discard the sum if negative
+    if(sum < 0) sum = 0;
+  }
+
+  //printing the subarray
+  cout << " The subarray is : [";
+  for(int i=ansStart; i<=ansEnd; i++){
+    cout << nums[i] << " ";
+  }
+  cout << "]";
+  return maxi;
+}
 
 int main(){ 
   vector<int> arr = {2, -5, -1, 7, -4, -2, 12};
